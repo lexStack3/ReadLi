@@ -1,0 +1,11 @@
+<h2>Welcome {{ user.first_name }} {{ user.last_name }}</h2>
+
+<p>Username: {{ user.username }}</p>
+<p>Email: {{ user.email }}</p>
+<p>Role: {{ user.role }}</p>
+
+<a href="{% url 'profile_edit' %}">Edit Profile</a>
+<form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
