@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Local Apps
     'accounts',
     'library',
+    'api'
 ]
 
 MIDDLEWARE = [
