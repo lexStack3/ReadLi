@@ -115,6 +115,9 @@ class BorrowRecord(BaseModel):
         ordering = ["-created_at"]
 
     def __str__(self):
+        """
+        String representation of a <BorrowRecord> instance.
+        """
         return f"{self.user.username} borrowed {self.book.title}"
 
     @property
