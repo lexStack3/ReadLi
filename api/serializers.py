@@ -26,3 +26,23 @@ class UserSerializer(serializers.ModelSerializer):
             'user_id', 'created_at', 'updated_at',
             'role'
         )
+
+
+class AuthorBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ['book_id', 'title']
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    """
+    An <Author> model serializer.
+    """
+    books = AuthorBookSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Author
+        fields = [
+            'author_id', 'name', 'biography', 'date_of_birth',
+            'books', 'created_at', 'updated_at'
+        ]
