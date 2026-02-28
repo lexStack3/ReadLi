@@ -1,0 +1,18 @@
+<nav style="font-size: 24px;">
+    <ul>
+        <li><a href="/api/">API</a></li>
+        <li><a href="{% url 'schema-swagger-ui' %}">Swagger API Documentation</a></li>
+        <li><a href="{% url 'schema-redoc' %}">Redoc Documentation</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'profile' %}>">Edit Profile</a></li>
+            <li><a href="{% url 'password_reset' %}">Change Password</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Signup</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<h2>Welcome to ReadLi Library Management System {% if user.is_authenticated %} {{ user.username }}! {% endif %}</h2>
