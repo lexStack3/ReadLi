@@ -1,4 +1,4 @@
-# 📚 ReadLi -- Library Management System API
+# 📚 ReadLi - Library Management System API
 
 ReadLi is a role-based Library Management REST API built with **Django**
 and **Django REST Framework**.
@@ -145,7 +145,7 @@ tracking.
 ## 🛠️ Installation
 
 ``` bash
-git clone https://github.com/yourusername/readli.git
+git clone https://github.com/lexStack3/ReadLi.git
 cd readli
 python -m venv venv
 
@@ -162,21 +162,9 @@ python manage.py runserver
 
 ------------------------------------------------------------------------
 
-## ⚙️ Recommended DRF Configuration
-
-``` python
-REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ]
-}
-```
-
-------------------------------------------------------------------------
-
 ## 🎥 Project Demo Video
 
-Video URL will be added here.
+[ReadLi - Library Management System](https://youtu.be/tpLu02g4QHE)
 
 ------------------------------------------------------------------------
 
