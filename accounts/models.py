@@ -27,7 +27,7 @@ class User(AbstractUser, BaseModel):
     role = models.CharField(
         max_length=20, choices=Role.choices, default=Role.PATRON
     )
-    email = models.CharField(
+    email = models.EmailField(
         max_length=128, blank=False, unique=True
     )
 
