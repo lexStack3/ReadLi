@@ -10,11 +10,10 @@ from library.models import (
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserViewOnlySerializer(serializers.ModelSerializer):
     """
     A <User> model serializer.
     """
-
     class Meta:
         model = User
         fields = [
@@ -22,10 +21,79 @@ class UserSerializer(serializers.ModelSerializer):
             'first_name', 'last_name', 'role',
             'created_at', 'updated_at'
         ]
-        read_only_fields = (
+        read_only_fields = ['role']
+
+
+class UserCreateSerializer(serializers.ModelSerializer):
+    """
+    A <User> model serializer for creating a new user.
+    """
+    password = serializers.CharField(
+        write_only=True,
+        style={'input_type': "password"}
+    )
+    password2 = serializers.CharField(
+        write_only=True,
+        style={'input_type': "password"}
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            'user_id', 'username', 'email',
+            'first_name', 'last_name', 'role',
+            'password', 'password2',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = [
             'user_id', 'created_at', 'updated_at',
             'role'
-        )
+        ]
+
+    def validate(self, attr):
+        """
+        Validates user password.
+        """
+        password = attr.get('password')
+
+        if password:
+            if attr['password'] != attr['password2']:
+                raise serializers.ValidationError(
+                    {'password': "Password does not match"}
+                )
+        return attr
+
+    def create(self, validated_data):
+        """
+        Creates a new <User> instance.
+        """
+        password = validated_data.pop('password')
+        validated_data.pop('password2')
+
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        """
+        Updates a <User> profile.
+        """
+        password = validated_data.pop('password')
+        password1 = validated_data.pop('password2')
+
+        for k, v in validated_data.items():
+            setattr(instance, k, v)
+
+        if password:
+            if password != password1:
+                raise serializers.ValidationError(
+                    {'password': "Password does not match"}
+                )
+            instance.set_password(password)
+
+        instance.save()
+        return instance
 
 
 class AuthorBookSerializer(serializers.ModelSerializer):
@@ -107,3 +175,96 @@ class BookSerializer(serializers.ModelSerializer):
             'author_ids', 'authors', 'categories', 'category_ids',
             'created_at', 'updated_at'
         ]
+
+
+class BorrowBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = [
+            'book_id', 'title'
+        ]
+
+class UserBorrowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['user_id', 'full_name', 'email', 'role']
+
+
+class BorrowRecordSerializer(serializers.ModelSerializer):
+    """
+    A <BorrowRecord> model serializer.
+    """
+    user = UserBorrowSerializer(read_only=True)
+    book_borrowed = BorrowBookSerializer(read_only=True, source='book')
+    book = serializers.PrimaryKeyRelatedField(
+        queryset=Book.objects.all(),
+    )
+
+    class Meta:
+        model = BorrowRecord
+        fields = [
+            'record_id', 'book', 'user', 'due_date',
+            'book_borrowed', 'is_returned', 'borrowed_at',
+            'returned_at', 'updated_at'
+        ]
+        read_only_fields = ['returned_at']
+
+    def validate(self, attr):
+        book = attr['book']
+
+        if book.available_copies == 0:
+            raise serializers.ValidationError(
+                {"available_copies": "Not enough books left for borrowing."}
+            )
+
+        return attr
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        book = validated_data.get('book')
+
+        record = BorrowRecord.objects.create(
+            book=book,
+            user=request.user,
+            due_date=validated_data.get('due_date', None)
+        )
+        book.available_copies -= 1
+        book.save(update_fields=['available_copies'])
+        return record
+
+
+class AdminBorrowSerializer(serializers.ModelSerializer):
+    """
+    A <BorrowRecord> model serializer for admin users.
+    """
+    borrower = UserBorrowSerializer(read_only=True, source='user')
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        write_only=True
+    )
+    book_borrowed = BorrowBookSerializer(read_only=True, source='book')
+    book = serializers.PrimaryKeyRelatedField(
+        queryset=Book.objects.all(),
+        write_only=True
+    )
+
+    class Meta:
+        model = BorrowRecord
+        fields = [
+            'record_id', 'borrower', 'user', 'book_borrowed',
+            'book', 'due_date', 'returned_at', 'is_returned',
+            'borrowed_at', 'updated_at'
+        ]
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        book = validated_data.get('book')
+
+        record = BorrowRecord.objects.create(
+            book=book,
+            user=request.user,
+            due_date=validated_data.get('due_date', None)
+        )
+        record.book.available_copies -= 1
+        record.book.save(update_fileds=['available_copies'])
+        return record
