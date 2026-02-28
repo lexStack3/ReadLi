@@ -1,5 +1,6 @@
 import uuid
-from django.db import models
+from django.utils import timezone
+from django.db import models, transaction
 from django.contrib.auth import get_user_model
 from accounts.models import BaseModel
 
@@ -127,3 +128,19 @@ class BorrowRecord(BaseModel):
     @property
     def borrowed_at(self):
         return self.created_at
+
+    def return_book(self):
+        """
+        Returns a book.
+        """
+        if self.returned_at:
+            return False
+
+        with transaction.atomic():
+            self.returned_at = timezone.now()
+            self.save(update_fields=['returned_at'])
+
+            self.book.available_copies += 1
+            self.book.save(update_fields=['available_copies'])
+
+        return True
