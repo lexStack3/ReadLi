@@ -77,7 +77,7 @@ ROOT_URLCONF = 'readli.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -148,6 +148,7 @@ LOGOUT_REDIRECT_URL = 'login'
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles')
 
 # REST_FRAMEWORK CONFIGURATIONS
 
