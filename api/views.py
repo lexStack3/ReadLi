@@ -64,7 +64,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         user = self.request.user
 
-        if user:
+        if user.is_authenticated:
             if user.is_staff or user.role == User.Role.LIBRARIAN:
                 return UserCreateAdminSerializer
 
