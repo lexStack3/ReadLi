@@ -96,6 +96,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
         return instance
 
 
+class UserCreateAdminSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        read_only_fields = ['user_id', 'created_at', 'updated_at']
+
+
 class AuthorBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
