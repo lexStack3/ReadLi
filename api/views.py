@@ -14,6 +14,7 @@ from library.models import (
 from .serializers import (
     UserViewOnlySerializer,
     UserCreateSerializer,
+    UserCreateAdminSerializer,
     AuthorSerializer,
     CategorySerializer,
     BookSerializer,
@@ -68,7 +69,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return UserCreateSerializer
         elif user:
             if user.is_staff or user.role == User.Role.LIBRARIAN:
-                return UserCreateSerializer
+                return UserCreateAdminSerializer
 
         return UserViewOnlySerializer
 
