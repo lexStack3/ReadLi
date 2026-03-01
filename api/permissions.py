@@ -29,3 +29,11 @@ class IsLibrarian(permissions.BasePermission):
             request.user.is_authenticated and
             request.user.role == User.Role.LIBRARIAN
         )
+
+
+class IsNotAuthenticated(permissions.BasePermission):
+    """
+    Grants access to unauthenticated viewers.
+    """
+    def has_permission(self, request, view):
+        return not request.user.is_authenticated
