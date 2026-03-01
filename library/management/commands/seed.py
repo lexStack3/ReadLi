@@ -22,10 +22,11 @@ class Command(BaseCommand):
 
         # Create User
         if not User.objects.filter(username="admin").exists():
-            User.objects.create_superuser(
+            admin = User.objects.create_superuser(
                 username="admin",
                 email="admin@readli.edu",
-                password="adminpass"
+                password="adminpass",
+                role=User.Role.LIBRARIAN
             )
 
         if not User.objects.filter(username="member").exists():
