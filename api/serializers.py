@@ -10,20 +10,6 @@ from library.models import (
 User = get_user_model()
 
 
-class UserViewOnlySerializer(serializers.ModelSerializer):
-    """
-    A <User> model serializer.
-    """
-    class Meta:
-        model = User
-        fields = [
-            'user_id', 'username', 'email',
-            'first_name', 'last_name', 'role',
-            'created_at', 'updated_at'
-        ]
-        read_only_fields = ['role']
-
-
 class UserCreateSerializer(serializers.ModelSerializer):
     """
     A <User> model serializer for creating a new user.
