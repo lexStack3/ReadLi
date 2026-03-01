@@ -12,7 +12,6 @@ from library.models import (
     Book, BorrowRecord
 )
 from .serializers import (
-    UserViewOnlySerializer,
     UserCreateSerializer,
     UserCreateAdminSerializer,
     AuthorSerializer,
@@ -21,7 +20,7 @@ from .serializers import (
     BorrowRecordSerializer,
     AdminBorrowSerializer
 )
-from .permissions import IsOwner, IsLibrarian
+from .permissions import IsOwner, IsLibrarian, IsNotAuthenticated
 from .filters import (
     UserFilter,
     AuthorFilter,
@@ -55,7 +54,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            return [AllowAny()]
+            return [(IsAdminUser | IsLibrarian | IsNotAuthenticated)()]
 
         if self.action in ['retrieve', 'update', 'partial_update', 'destroy']:
             return [(IsOwner | IsLibrarian | IsAdminUser)()]
@@ -65,13 +64,11 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         user = self.request.user
 
-        if not user.is_authenticated:
-            return UserCreateSerializer
-        elif user:
+        if user:
             if user.is_staff or user.role == User.Role.LIBRARIAN:
                 return UserCreateAdminSerializer
 
-        return UserViewOnlySerializer
+        return UserCreateSerializer
 
 
 class AuthorViewSet(viewsets.ModelViewSet):
