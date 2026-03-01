@@ -29,9 +29,8 @@ tracking.
 -   Python 3.12
 -   Django
 -   Django REST Framework
--   SQLite (Development)
--   UUID Primary Keys
--   Role-Based Permissions
+-   MySQL
+-   Django Simple JWT
 
 ------------------------------------------------------------------------
 
