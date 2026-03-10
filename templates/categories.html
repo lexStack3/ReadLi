@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet%}<link rel="stylesheet" href="{% static 'css/categories.css' %}"/>{% endblock %}
+
+{% block content %}
+        <main id="categories-main">
+            <section id="categories-header" class="categories-header">
+                <h3>Categories</h3>
+                <p>Discover books by genre</p>
+            </section>
+            <section id="categories-grid" class="categories-grid">
+                {% for category in categories %}
+                <a href="{% url 'categories' %}" class="category-card">
+                    <i class="fa-solid fa-tag category-icon"></i>
+                    <h3 class="category-title">{{ category.name }}</h3>
+                    <p class="category-description">{{ category.description }}</p>
+                    <p class="category-count"><i class="fa-solid fa-book"></i> {{ category.books.count }}+ books</p>
+                </a>
+                {% endfor %}
+            </section>
+        </main>
+{% endblock %}

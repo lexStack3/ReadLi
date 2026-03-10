@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}ReadLi{% endblock %}</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        {% block stylesheet %}{% endblock%}
+    </head>
+    <body>
+        <header id="hero">
+            <section id="hero-title" class="hero-title">
+                <a href="{% url 'home' %}" class="hero-title-link">
+                    <img src="{% static 'images/logo.png' %}" alt="ReadLi Logo" class="logo">
+                    <h1>ReadLi</h1>
+                </a>
+            </section>
+            <section id="hero-links" class="hero-links">
+                <nav class="nav-primary">
+                    <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'books' %}">Books</a></li>
+                    <li><a href="{% url 'authors' %}">Authors</a></li>
+                    <li><a href="{% url 'categories' %}">Categories</a></li>
+                    </ul>
+                </nav>
+            </section>
+            <section id="hero-auth-links" class="hero-auth-links">
+                <nav class="nav-auth">
+                    <ul>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                    </ul>
+                </nav>
+            </section>
+        </header>
+        {% block content %}{% endblock %}
+        <footer id="footer">
+            <div class="footer-content">
+            <div class="footer-section footer-brand">
+                <img src="{% static 'images/logo.png' %}" alt="ReadLi Logo">
+                <h1>ReadLi</h1>
+                <p>A modern library management system. Browse, borrow, and discover your next great read.</p>
+            </div>
+            <div class="footer-section footer-links">
+                <h3>Browse</h3>
+                <ul>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'books' %}">Books</a></li>
+                <li><a href="{% url 'authors' %}">Authors</a></li>
+                <li><a href="{% url 'categories' %}">Categories</a></li>
+                <li><a href="/api">RESTful API</a></li>
+                <li><a href="{% url 'schema-swagger-ui' %}">Swagger Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-contact">
+                <h3>Contact Us</h3>
+                <p>Email: info@readli.com</p>
+            </div>
+            </div>
+            <div class="footer-divider"></div>
+            <p class="footer-copyright">&copy; 2024 ReadLi. All rights reserved.</p>
+        </footer>
+    </body>
+</html>

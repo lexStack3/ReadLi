@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet%}<link rel="stylesheet" href="{% static 'css/authors.css' %}"/>{% endblock %}
+
+{% block content %}
+        <main id="authors-main">
+            <section class="authors-header">
+                <h3>Authors</h3>
+                <p>Meet the minds behind our collection</p>
+            </section>
+            <section class="authors-grid">
+                {% for author in authors %}
+                <a href="{% url 'authors' %}" class="author-card">
+                    <i class="fa-regular fa-user"></i>
+                    <h3>{{ author.name }}</h3>
+                    <p>{{ author.biography }}</p>
+                    <p class="book-count">{{ author.books.count }}</p>
+                </a>
+                {% endfor %}
+            </section>
+        </main>
+{% endblock content %}

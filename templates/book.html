@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet%}<link rel="stylesheet" href="{% static 'css/book.css' %}"/>{% endblock %}
+
+{% block content %}
+        <main id="book-detail">
+            <div class="book-nav">
+                <a href="/books.html" class="back-link">← back to books</a>
+            </div>
+            <div id="book">
+                <div class="book-cover">
+                    <img src="{% static 'images/book.png' %}" alt="Book cover">
+                </div>
+                <div class="book-info">
+                    {% for category in book.categories.all %}
+                    <span class="book-category">
+                        {{ category }}
+                    </span>
+                    {% endfor %}
+                    <h2 class="book-title">{{ book.title }}</h2>
+                    {% for author in book.authors.all %}
+                    <span class="book-author">
+                        {{ author }}
+                    </span>
+                    {% endfor %}
+                    <p class="book-description">{{ book.description }}</p>
+                    <div class="book-stats">
+                        <div class="stat">
+                            <p class="stat-number">{{ book.available_copies }}</p>
+                            <p class="stat-label">Available</p>
+                        </div>
+                        <div class="stat">
+                            <p class="stat-number">{{ book.total_copies }}</p>
+                            <p class="stat-label">Total Copies</p>
+                        </div>
+                        <div class="stat">
+                            <i class="fa-regular fa-calendar"></i>
+                            <p class="book-published">{{ book.publication_date }}</p>
+                        </div>
+                        <div class="stat">
+                            <i class="fa-solid fa-hashtag"></i>
+                            <p class="book-isbn">{{ book.isbn }}</p>
+                        </div>
+                    </div>
+                    <button class="btn-borrow">Borrow This Book</button>
+                </div>
+            </div>
+        </main>
+{% endblock %}

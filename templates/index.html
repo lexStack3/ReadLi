@@ -1,23 +1,87 @@
-<nav style="font-size: 24px;">
-    <ul>
-        <li><a href="/api/">API</a></li>
-        <li><a href="{% url 'schema-swagger-ui' %}">Swagger API Documentation</a></li>
-        <li><a href="{% url 'schema-redoc' %}">Redoc Documentation</a></li>
-        {% if user.is_authenticated %}
-            <li><a href="{% url 'profile' %}">Profile</a></li>
-            <li><a href="{% url 'profile_edit' %}">Edit Profile</a></li>
-            <li><a href="{% url 'password_reset' %}">Change Password</a></li>
-            <li>
-                <form method="POST" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
-            </li>
-        {% else %}
-            <li><a href="{% url 'login' %}">Login</a></li>
-            <li><a href="{% url 'signup' %}">Signup</a></li>
-        {% endif %}
-    </ul>
-</nav>
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheet %}<link rel="stylesheet" href="{% static 'css/index.css' %}">{% endblock %}
 
-<h2>Welcome to ReadLi Library Management System {% if user.is_authenticated %} {{ user.username }}! {% endif %}</h2>
+{% block content %}
+        <main id="main-content">
+            <section id="hero-cta" class="hero-cta">
+                <h1>Your next great</h1>
+                <h1>read awaits</h1>
+                <p>Browse, borrow, and discover from our curated collection. ReadLi makes library management effortless.</p>
+                <div class="cta-buttons">
+                    <a class="btn btn-primary" href="{% url 'books' %}">Browse Books →</a>
+                    <a class="btn btn-secondary" href="{% url 'signup' %}">Create Account</a>                </div>
+            </section>
+            <section id="stats" class="stats-section">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-book"></i>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-number">2,400+</p>
+                            <p class="stat-label">Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-number">350+</p>
+                            <p class="stat-label">Authors</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-number">24</p>
+                            <p class="stat-label">Categories</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="featured-books" class="featured-books-section">
+                
+                <div class="featured-header">
+                    <div class="featured-info">
+                        <h1>Hand-picked selections from our library</h1>
+                        <p>Discover your next favorite book with our hand-picked selections. Our team curates the best reads across genres, ensuring you find something you'll love.</p>
+                    </div>
+                    <div class="featured-link">
+                        <a href="{% url 'books' %}">View all →</a>
+                    </div>
+                </div>
+                <div class="books-grid">
+                    {% for book in books %}
+                    <a href="{% url 'book' book.pk %}" class="book-card-link">
+                        <div class="book-card">
+                            <img src="{% static 'images/book.png' %}" width="150px" height="175px" alt="Book 1">
+                            <p class="category">
+                                {% for category in book.categories.all %}
+                                {{ category.name }}
+                                {% endfor %}
+                            </p>
+                            <h3>{{ book.title }}</h3>
+                            <p class="author">
+                                {% for author in book.authors.all %}
+                                {{ author.name }}
+                                {% endfor %}
+                            </p>
+                            <p class="availability"><i class="fa-solid fa-circle"></i> {{ book.available_copies }}+ available</p>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
+            <section id="cta" class="cta-section">
+                <div class="cta-content">
+                    <h2 class="cta-title">Ready to start reading?</h2>
+                    <p class="cta-description">Sign up as a patron and start borrowing books today. It's free and takes less than a minute.</p>
+                    <a href="{% url 'signup' %}" class="cta-button">Get Started →</a>
+                </div>
+            </section>
+        </main>
+{% endblock content %}

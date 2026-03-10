@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet%}<link rel="stylesheet" href="{% static 'css/dashboard.css' %}"/>{% endblock %}
+
+{% block content %}
+        <main id="dashboard-main" class="dashboard-container">
+            <section id="dashboard-header" class="dashboard-header">
+                <h3>My dashboard</h3>
+                <p>Manage your borrowed books.</p>
+            </section>
+            <section id="dashboard-stats" class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <p>2 books</p>
+                        <h3>Currently Borrowed</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-regular fa-circle-xmark"></i>
+                    </div>
+                    <div class="stat-content">
+                        <p>1 book</p>
+                        <h3>Overdue</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <p>5 books</p>
+                        <h3>Returned</h3>
+                    </div>
+                </div>
+            </section>
+            <section id="dashboard-books" class="dashboard-books">
+                <table class="books-table">
+                    <thead>
+                        <tr>
+                            <th>Book</th>
+                            <th>Borrowed</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td>{{ record.book }}</td>
+                            <td>{{ record.borrowed_at }}</td>
+                            <td>{{ record.due_date }}</td>
+                            <td>
+                                {% if record.is_returned %}
+                                Returned
+                                {% else %}
+                                Borrowed
+                                {% endif %}
+                            </td>
+                            <td><button class="btn-return">Return</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+{% endblock %}

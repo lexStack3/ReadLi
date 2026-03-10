@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet%}<link rel="stylesheet" href="{% static 'css/books.css' %}"/>{% endblock %}
+
+{% block content %}
+        <main id="books-main">
+            <section id="books-header" class="books-header">
+                <h3>Books</h3>
+                <p>Explore our full collection</p>
+                <form action="#" class="search-form">
+                    <input type="text" placeholder="Search for books..." class="search-input">
+                    <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </section>
+            <section id="books-grid" class="books-grid">
+                {% for book in books %}
+                <a href="{% url 'book' book.book_id %}" class="book-card">
+                    <img src="{% static 'images/book.png' %}" width="150px" height="175px" alt="Book 1" class="book-image">
+                    <p class="book-category">
+                        {% for category in book.categories.all %}
+                            {{ category.name }}
+                        {% endfor %}
+                    </p>
+                    <h3 class="book-title">{{ book.title }}</h3>
+                    <p class="book-author"><i class="fa-solid fa-user"></i> 
+                        {% for author in book.authors.all %}
+                            {{ author.name }}
+                        {% endfor %}
+                    </p>
+                    <p class="book-description">{{ book.description }}</p>
+                    <p class="book-availability"><i class="fa-solid fa-circle"></i> {{ book.available_copies }} available</p>
+                </a>
+                {% endfor %}
+            </section>
+        </main>
+{% endblock %}
