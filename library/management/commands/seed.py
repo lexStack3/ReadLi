@@ -10,7 +10,6 @@ from library.models import (
     Book, BorrowRecord
 )
 
-
 User = get_user_model()
 
 
@@ -20,78 +19,141 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         self.stdout.write(self.style.WARNING("Seeding database..."))
 
-        # Create User
-        if not User.objects.filter(username="admin").exists():
-            admin = User.objects.create_superuser(
-                username="admin",
-                email="admin@readli.edu",
-                password="adminpass",
-                role=User.Role.LIBRARIAN
+        # ----------------------
+        # Create Users
+        # ----------------------
+
+        users = []
+
+        admin, _ = User.objects.get_or_create(
+            username="admin",
+            defaults={
+                "email": "admin@readli.edu",
+                "role": User.Role.LIBRARIAN
+            }
+        )
+        admin.set_password("adminpass")
+        admin.is_superuser = True
+        admin.is_staff = True
+        admin.save()
+        users.append(admin)
+
+        for i in range(1, 16):
+            user, _ = User.objects.get_or_create(
+                username=f"member{i}",
+                defaults={
+                    "email": f"member{i}@readli.edu"
+                }
             )
+            user.set_password("memberpass")
+            user.save()
+            users.append(user)
 
-        if not User.objects.filter(username="member").exists():
-            User.objects.create_user(
-                username="member",
-                email="member@readli.edu",
-                password="memberpass"
-            )
-
-
+        # ----------------------
         # Create Authors
-        authors = [
-            Author.objects.get_or_create(name="Chinua Achebe")[0],
-            Author.objects.get_or_create(name="J.K Rowling")[0],
-            Author.objects.get_or_create(name="George Orwell")[0]
+        # ----------------------
+
+        author_names = [
+            "Chinua Achebe", "Wole Soyinka", "Chimamanda Ngozi Adichie",
+            "George Orwell", "J.K Rowling", "Stephen King",
+            "James Baldwin", "Toni Morrison", "Ngugi wa Thiong'o",
+            "Leo Tolstoy", "Fyodor Dostoevsky", "Mark Twain",
+            "Jane Austen", "Charles Dickens", "Ernest Hemingway"
         ]
 
+        authors = []
+
+        for name in author_names:
+            author, _ = Author.objects.get_or_create(name=name)
+            authors.append(author)
+
+        # ----------------------
         # Create Categories
-        categories = [
-            Category.objects.get_or_create(name="Fiction")[0],
-            Category.objects.get_or_create(name="Fantasy")[0],
-            Category.objects.get_or_create(name="Drama")[0]
+        # ----------------------
+
+        category_names = [
+            "Fiction", "Fantasy", "Drama", "Science Fiction",
+            "Romance", "Thriller", "Mystery", "Biography",
+            "History", "Philosophy", "Technology", "Education",
+            "Politics", "Horror", "Adventure"
         ]
 
+        categories = []
+
+        for name in category_names:
+            category, _ = Category.objects.get_or_create(name=name)
+            categories.append(category)
+
+        # ----------------------
         # Create Books
-        book1, _ = Book.objects.get_or_create(
-            title="Things Fall Apart",
-            isbn="1234567890123",
-            publication_date="1958-01-01",
-            total_copies=5,
-            available_copies=5
-        )
-        book1.authors.set([authors[0]])
-        book1.categories.set([categories[0], categories[2]])
+        # ----------------------
 
-        book2, _ = Book.objects.get_or_create(
-            title="Harry Potter and the Philosopher's Stone",
-            isbn="1234567890124",
-            publication_date="1997-06-26",
-            total_copies=10,
-            available_copies=10
-        )
-        book2.authors.set([authors[1]])
-        book2.categories.set([categories[0], categories[1]])
+        book_titles = [
+            "Things Fall Apart",
+            "Half of a Yellow Sun",
+            "Purple Hibiscus",
+            "1984",
+            "Animal Farm",
+            "Harry Potter and the Philosopher's Stone",
+            "Harry Potter and the Chamber of Secrets",
+            "The Shining",
+            "It",
+            "The Adventures of Tom Sawyer",
+            "Pride and Prejudice",
+            "War and Peace",
+            "Crime and Punishment",
+            "Great Expectations",
+            "The Old Man and the Sea"
+        ]
 
-        book3, _ = Book.objects.get_or_create(
-            title="1984",
-            isbn="1234567890125",
-            publication_date="1949-06-08",
-            total_copies=7,
-            available_copies=7
-        )
-        book3.authors.set([authors[1]])
-        book3.categories.set([categories[0]])
+        books = []
 
-        # Create Borrow Record
-        member = User.objects.get(username="member")
+        for i, title in enumerate(book_titles):
 
-        if not BorrowRecord.objects.filter(user=member, book=book1).exists():
-            BorrowRecord.objects.create(
-                user=member,
-                book=book1,
-                due_date=timezone.now().date() + timedelta(days=14)
+            isbn = f"97800000000{i+1}"
+
+            book, _ = Book.objects.get_or_create(
+                title=title,
+                defaults={
+                    "isbn": isbn,
+                    "publication_date": "2000-01-01",
+                    "total_copies": random.randint(5, 10),
+                    "available_copies": random.randint(5, 10),
+                }
             )
-            book1.available_copies -= 1
-            book1.save()
+
+            # assign authors
+            book.authors.set(random.sample(authors, random.randint(1, 2)))
+
+            # assign categories
+            book.categories.set(random.sample(categories, random.randint(1, 3)))
+
+            books.append(book)
+
+        # ----------------------
+        # Create Borrow Records
+        # ----------------------
+
+        borrow_records_created = 0
+
+        while borrow_records_created < 15:
+            user = random.choice(users[1:])  # avoid admin
+            book = random.choice(books)
+
+            if book.available_copies <= 0:
+                continue
+
+            record, created = BorrowRecord.objects.get_or_create(
+                user=user,
+                book=book,
+                defaults={
+                    "due_date": timezone.now().date() + timedelta(days=14)
+                }
+            )
+
+            if created:
+                book.available_copies -= 1
+                book.save()
+                borrow_records_created += 1
 
         self.stdout.write(self.style.SUCCESS("Database seeded successfully"))
