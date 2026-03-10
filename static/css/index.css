@@ -1,0 +1,343 @@
+/* HOME  */
+main {
+    margin-bottom: 0;
+}
+
+main > section:first-child {
+    background: linear-gradient(rgba(0, 0, 0, 0.178), rgba(0, 0, 0, 0.7)), 
+                url('../images/library-background.jpg') center/cover no-repeat;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 80px;
+    color: white;
+    text-align: left;
+}
+
+main > section:first-child h1 {
+    font-size: 4.5rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.1;
+}
+
+main > section:first-child h1:nth-of-type(2) {
+    color: #FF9500;
+    margin-bottom: 20px;
+}
+
+main > section:first-child p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+main > section:first-child div {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+main > section:first-child button {
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s;
+}
+
+main > section:first-child button:first-child {
+    background-color: #FF9500;
+    color: white;
+}
+
+main > section:first-child button:last-child {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+main > section:first-child button:hover {
+    opacity: 0.9;
+}
+
+/* ---- */
+
+#stats {
+    padding: 40px 20px;
+    background-color: #f9f7f4;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: center;
+    gap: 120px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* more space between icon and text */
+    padding: 0 40px;
+    text-align: left;
+}
+
+.stat-card:not(:first-child) {
+    border-left: 1px solid #e0e0e0;
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    color: #f39c12;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+    margin: 4px 0 0 0;
+}
+
+/* -----  */
+#featured-books {
+    padding: 60px 40px;
+    background-color: #f5f5f5;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+#featured-books .featured-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+
+#featured-books .featured-info {
+    flex: 1;
+}
+#featured-books .featured-link {
+    flex-shrink: 0;
+}
+
+#featured-books .featured-info h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #1a1a1a;
+    line-height: 1.2;
+}
+#featured-books .featured-info p {
+    margin-top: 0.25rem;
+}
+
+
+#featured-books .featured-info p {
+    color: #666;
+    font-size: 14px;
+}
+
+#featured-books .featured-link a {
+    color: #1a1a1a;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    .books-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.book-card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.book-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    background-color: #eee;
+}
+
+.book-card .category {
+    font-size: 0.75rem;
+    color: #f39c12;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.book-card h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0;
+    color: #1a1a1a;
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-card .author {
+    color: #666;
+    font-size: 0.875rem;
+    margin-bottom: 6px;
+}
+
+.book-card .availability {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.book-card .availability .fa-circle {
+    margin-right: 4px;
+    font-size: 0.75rem;
+}
+
+/* ------  */
+#cta {
+    background: #f39c12;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.cta-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cta-title {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.cta-description {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 14px 40px;
+    border: 2px solid white;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    background: none;
+}
+
+.cta-button:hover {
+    background-color: white;
+    color: #e67e22;
+}
+
+.book-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 12px;
+    outline: none;
+}
+
+.book-card-link .book-card {
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
+    border: 1px solid #e8e8e8;
+    cursor: pointer;
+}
+
+.book-card-link:hover .book-card {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.book-card-link:active .book-card {
+    transform: translateY(-2px) scale(0.99);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.10);
+}
+
+.book-card-link:focus-visible .book-card {
+    box-shadow: 0 0 0 4px rgba(255, 149, 0, 0.25), 0 10px 24px rgba(0, 0, 0, 0.12);
+    border-color: #ff9500;
+}
+
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.btn-primary {
+    background-color: #ff9500;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #e68a00;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-secondary:hover {
+    background-color: white;
+    color: #333;
+}
