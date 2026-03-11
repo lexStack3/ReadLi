@@ -163,7 +163,7 @@ python manage.py runserver
 
 ## 🎥 Project Demo Video
 
-[ReadLi - Library Management System](https://youtu.be/tpLu02g4QHE)
+[ReadLi - Library Management System](https://youtu.be/uUoswjYmWzY)
 
 ------------------------------------------------------------------------
 
